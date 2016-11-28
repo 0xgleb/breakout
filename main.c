@@ -266,7 +266,9 @@ int main()
 
     platform -> velocity -> y = right? left? 0 : 8 * SPEED : left? - 8 * SPEED : 0;
 
-    if(platform -> velocity -> x < SPEED * 2)
+    if(platform -> velocity -> x < SPEED * 2 && right)
+      platform -> velocity -> x += platform -> velocity -> y / FPS;
+    if(platform -> velocity -> x > - SPEED * 2 && left)
       platform -> velocity -> x += platform -> velocity -> y / FPS;
 
     platform -> coord -> x += platform -> velocity -> x / FPS;
