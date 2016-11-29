@@ -18,6 +18,8 @@
 #define PLATFORM_Y (200)
 #define PLATFORM_W (100)
 #define PLATFORM_H (30)
+#define PLATFORM_EDGE_WIDTH (10)
+#define DECELERATION (1.05)
 
 #define BALL_X (160)
 #define BALL_Y (200)
@@ -236,11 +238,16 @@ int main()
       ball -> coord -> y = 0;
       ball -> velocity -> y = - ball -> velocity -> y;
     }
-    else if(ball -> coord -> y >= platform -> coord -> y - platform -> selection -> h / 2
-        && platform -> coord -> x - platform -> selection -> w <= ball -> coord -> x 
-        && ball -> coord -> x <= platform -> coord -> x + platform -> selection -> w) {
-      ball -> velocity -> y = - ball -> velocity -> y;
-      ball -> velocity -> x += platform -> velocity -> x / 4;
+    else if(ball -> coord -> y >= platform -> coord -> y - 2 * BALL_R && platform -> coord -> x <= ball -> coord -> x 
+    && ball -> coord -> x <= platform -> coord -> x + PLATFORM_W) {
+      if(platform -> coord -> x - 2 * BALL_R <= ball -> coord -> x 
+      && ball -> coord -> x <= platform -> coord -> x - 2 * BALL_R + PLATFORM_EDGE_WIDTH) {
+        printf("opa\n");
+      }
+      else {
+        ball -> velocity -> y = - ball -> velocity -> y;
+        ball -> velocity -> x += platform -> velocity -> x / 4;
+      }
     }
 
     if(ball -> coord -> x <= 0) {
@@ -268,8 +275,11 @@ int main()
 
     if(platform -> velocity -> x < SPEED * 2 && right)
       platform -> velocity -> x += platform -> velocity -> y / FPS;
-    if(platform -> velocity -> x > - SPEED * 2 && left)
+    else if(platform -> velocity -> x > - SPEED * 2 && left)
       platform -> velocity -> x += platform -> velocity -> y / FPS;
+
+    if(right ^ left)
+      platform -> velocity -> x /= DECELERATION;
 
     platform -> coord -> x += platform -> velocity -> x / FPS;
 
@@ -280,7 +290,7 @@ int main()
     else if(platform -> coord -> x + PLATFORM_W > WINDOW_WIDTH) {
       platform -> coord -> x = WINDOW_WIDTH - PLATFORM_W;
       platform -> velocity -> x = - platform -> velocity -> x;
-    }
+   }
 
     platform -> destination -> x = platform -> coord -> x;
 
