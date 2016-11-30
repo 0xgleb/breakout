@@ -20,6 +20,19 @@ SDL_Window* createWindow(char *title)
   return win;
 }
 
+SDL_Renderer* createRenderer(SDL_Window* win)
+{
+  SDL_Renderer *rend = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+  if(!rend) {
+    printf("Error occured while creating renderer: %s\n", SDL_GetError());
+    SDL_DestroyWindow(win);
+    SDL_Quit();
+    return NULL;
+  }
+
+  return rend;
+}
+
 
 void onCollision(struct list *current, struct object *ball) 
 {

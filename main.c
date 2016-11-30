@@ -62,13 +62,8 @@ int main()
   SDL_Window *win = createWindow("Breakout");
   if(!win) return 1;
 
-  SDL_Renderer *rend = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-  if(!rend) {
-    printf("Error occured while creating renderer: %s\n", SDL_GetError());
-    SDL_DestroyWindow(win);
-    SDL_Quit();
-    return 1;
-  }
+  SDL_Renderer *rend = createRenderer(win);
+  if(!rend) return 1;
 
   SDL_Surface *surface = IMG_Load("images/breakout_bg.png");
   if(!surface) {
@@ -278,7 +273,7 @@ int main()
     else if(platform -> velocity -> x > - SPEED * 2 && left)
       platform -> velocity -> x += platform -> velocity -> y / FPS;
 
-    if(right ^ left)
+    if(!(right ^ left))
       platform -> velocity -> x /= DECELERATION;
 
     platform -> coord -> x += platform -> velocity -> x / FPS;
