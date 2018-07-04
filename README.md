@@ -1,6 +1,6 @@
 # About the repo
 
-In college we had a coding challenge, we had to implement breakout. This is my implementation in C.
+In college we had a coding challenge, we had to implement breakout and compare it to the teacher's implementation. This is my implementation in C.
 
 # Commentry on Coding Essay by Gleb Dianov
 
